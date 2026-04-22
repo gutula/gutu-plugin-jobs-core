@@ -6,12 +6,12 @@
     "framework/builtin-plugins/*"
   ],
   "scripts": {
-    "build": "bun --cwd framework/builtin-plugins/jobs-core run build",
-    "typecheck": "bun --cwd framework/builtin-plugins/jobs-core run typecheck",
-    "lint": "bun --cwd framework/builtin-plugins/jobs-core run lint",
-    "test": "bun --cwd framework/builtin-plugins/jobs-core run test",
-    "test:contracts": "bun --cwd framework/builtin-plugins/jobs-core run test:contracts",
-    "test:unit": "bun --cwd framework/builtin-plugins/jobs-core run test:unit",
+    "build": "bun run --cwd framework/builtin-plugins/jobs-core build",
+    "typecheck": "bun run --cwd framework/builtin-plugins/jobs-core typecheck",
+    "lint": "bun run --cwd framework/builtin-plugins/jobs-core lint",
+    "test": "bun run --cwd framework/builtin-plugins/jobs-core test",
+    "test:contracts": "bun run --cwd framework/builtin-plugins/jobs-core test:contracts",
+    "test:unit": "bun run --cwd framework/builtin-plugins/jobs-core test:unit",
     "docs:summary": "node scripts/docs-summary.mjs",
     "docs:check": "node scripts/docs-check.mjs"
   }

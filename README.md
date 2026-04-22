@@ -27,7 +27,7 @@ Registers the background job definitions, queues, retry policy, and execution me
 
 - Exports 1 governed action: `jobs.executions.schedule`.
 - Owns 1 resource contract: `jobs.executions`.
-- Publishes 3 job definitions with explicit queue and retry policy metadata.
+- Publishes 13 job definitions covering notifications dispatch, AI run intake and verification, workflow approval reminders and escalations, and company-intake classification and recovery.
 - Registers a bounded UI surface that can be hosted by the surrounding admin or portal shell.
 - Defines a durable data schema contract even though no explicit SQL helper module is exported.
 
@@ -65,7 +65,7 @@ This tier is justified because unit coverage exists, contract coverage exists, a
 | --- | --- | --- |
 | Actions | 1 | `jobs.executions.schedule` |
 | Resources | 1 | `jobs.executions` |
-| Jobs | 3 | `crm.sync-segments`, `files.scan-uploads`, `notifications.dispatch` |
+| Jobs | 13 | `crm.sync-segments`, `files.scan-uploads`, `notifications.dispatch`, `notifications.dispatch.immediate`, `notifications.dispatch.scheduled`, `notifications.dispatch.digest`, `notifications.dispatch.retry`, `ai.runs.intake`, `ai.runs.verify`, `workflow.approvals.remind`, `workflow.approvals.escalate`, `company.work-intakes.classify`, `company.work-intakes.recover` |
 | Workflows | 0 | No workflow catalog exported |
 | UI | Present | base UI surface |
 
@@ -109,12 +109,11 @@ Use the root repo scripts for day-to-day work **after the workspace is bootstrap
 
 ## Recommended Next Milestones
 
+- Add targeted integration coverage for AI run intake, verification, approval reminders, escalations, and company recovery jobs.
+- Add explicit migration or rollback coverage if job execution state becomes more operationally sensitive.
 - Add stronger worker-runtime integration guidance and operational troubleshooting as more plugins dispatch background jobs.
 - Expose more lifecycle telemetry once execution state becomes a first-class operator concern.
 - Add stronger operator-facing reconciliation and observability surfaces where runtime state matters.
-- Promote any currently implicit cross-plugin lifecycles into explicit command, event, or job contracts when those integrations stabilize.
-- Add targeted integration coverage once the current lifecycle path is stable enough to benefit from end-to-end assertions.
-- Add explicit migration or rollback coverage if this domain becomes more operationally sensitive.
 - Broaden the admin entry surface only if operators need more than the current embedded view or resource listing.
 
 ## More Docs
