@@ -4,6 +4,10 @@
 
 - `jobs.executions.schedule`: Governed action exported by this plugin.
 
+## Operational scenario matrix
+
+- No operational scenario catalog is exported today.
+
 ## Action-level flows
 
 ### `jobs.executions.schedule`
@@ -36,4 +40,5 @@ Forbidden shortcuts:
 - Direct dependencies: `auth-core`, `org-tenant-core`, `role-policy-core`, `audit-core`
 - Requested capabilities: `ui.register.admin`, `api.rest.mount`, `data.write.jobs`
 - Integration model: Actions+Resources+Jobs+UI
+- ERPNext doctypes used as parity references: none declared
 - Recovery ownership should stay with the host orchestration layer when the plugin does not explicitly export jobs, workflows, or lifecycle events.

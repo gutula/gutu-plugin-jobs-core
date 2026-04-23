@@ -5,6 +5,12 @@ export default definePackage({
   kind: "app",
   version: "0.1.0",
   displayName: "Jobs Core",
+  defaultCategory: {
+    id: "platform_governance",
+    label: "Platform Governance",
+    subcategoryId: "job_orchestration",
+    subcategoryLabel: "Job Orchestration"
+  },
   description: "Background jobs, schedules, and execution metadata.",
   extends: [],
   dependsOn: ["auth-core","org-tenant-core","role-policy-core","audit-core"],

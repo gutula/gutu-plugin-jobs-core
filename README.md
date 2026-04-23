@@ -14,6 +14,7 @@ Background jobs, schedules, and execution metadata.
 | --- | --- |
 | Repo kind | First-party plugin |
 | Domain group | Platform Backbone |
+| Default category | Platform Governance / Job Orchestration |
 | Primary focus | job definitions, retry policy, execution metadata |
 | Best when | You need a governed domain boundary with explicit contracts and independent release cadence. |
 | Composes through | Actions+Resources+Jobs+UI |
@@ -27,7 +28,7 @@ Registers the background job definitions, queues, retry policy, and execution me
 
 - Exports 1 governed action: `jobs.executions.schedule`.
 - Owns 1 resource contract: `jobs.executions`.
-- Publishes 13 job definitions covering notifications dispatch, AI run intake and verification, workflow approval reminders and escalations, and company-intake classification and recovery.
+- Publishes 13 job definitions with explicit queue and retry policy metadata.
 - Registers a bounded UI surface that can be hosted by the surrounding admin or portal shell.
 - Defines a durable data schema contract even though no explicit SQL helper module is exported.
 
@@ -39,7 +40,8 @@ This tier is justified because unit coverage exists, contract coverage exists, a
 
 ## Verified Capability Summary
 
-- Group: **Platform Backbone**
+- Domain group: **Platform Backbone**
+- Default category: **Platform Governance / Job Orchestration**
 - Verification surface: **Build+Typecheck+Lint+Test+Contracts**
 - Tests discovered: **2** total files across unit, contract lanes
 - Integration model: **Actions+Resources+Jobs+UI**
@@ -68,6 +70,12 @@ This tier is justified because unit coverage exists, contract coverage exists, a
 | Jobs | 13 | `crm.sync-segments`, `files.scan-uploads`, `notifications.dispatch`, `notifications.dispatch.immediate`, `notifications.dispatch.scheduled`, `notifications.dispatch.digest`, `notifications.dispatch.retry`, `ai.runs.intake`, `ai.runs.verify`, `workflow.approvals.remind`, `workflow.approvals.escalate`, `company.work-intakes.classify`, `company.work-intakes.recover` |
 | Workflows | 0 | No workflow catalog exported |
 | UI | Present | base UI surface |
+| Owned Entities | 0 | No explicit domain catalog yet |
+| Reports | 0 | No explicit report catalog yet |
+| Exception Queues | 0 | No explicit exception queues yet |
+| Operational Scenarios | 0 | No explicit operational scenario matrix yet |
+| Settings Surfaces | 0 | No explicit settings surface catalog yet |
+| ERPNext Refs | 0 | No direct ERPNext reference mapping declared |
 
 ## Quick Start For Integrators
 
@@ -109,11 +117,12 @@ Use the root repo scripts for day-to-day work **after the workspace is bootstrap
 
 ## Recommended Next Milestones
 
-- Add targeted integration coverage for AI run intake, verification, approval reminders, escalations, and company recovery jobs.
-- Add explicit migration or rollback coverage if job execution state becomes more operationally sensitive.
 - Add stronger worker-runtime integration guidance and operational troubleshooting as more plugins dispatch background jobs.
 - Expose more lifecycle telemetry once execution state becomes a first-class operator concern.
 - Add stronger operator-facing reconciliation and observability surfaces where runtime state matters.
+- Promote any currently implicit cross-plugin lifecycles into explicit command, event, or job contracts when those integrations stabilize.
+- Add targeted integration coverage once the current lifecycle path is stable enough to benefit from end-to-end assertions.
+- Add explicit migration or rollback coverage if this domain becomes more operationally sensitive.
 - Broaden the admin entry surface only if operators need more than the current embedded view or resource listing.
 
 ## More Docs

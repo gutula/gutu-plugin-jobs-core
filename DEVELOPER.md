@@ -40,6 +40,8 @@ Registers the background job definitions, queues, retry policy, and execution me
 | Package Name | `@plugins/jobs-core` |
 | Manifest ID | `jobs-core` |
 | Display Name | Jobs Core |
+| Domain Group | Platform Backbone |
+| Default Category | Platform Governance / Job Orchestration |
 | Version | `0.1.0` |
 | Kind | `app` |
 | Trust Tier | `first-party` |
@@ -78,16 +80,16 @@ Registers the background job definitions, queues, retry policy, and execution me
 | `crm.sync-segments` | `crm-sync` | Retry policy not declared | No timeout declared |
 | `files.scan-uploads` | `files-security` | Retry policy not declared | No timeout declared |
 | `notifications.dispatch` | `notifications` | Retry policy not declared | No timeout declared |
-| `notifications.dispatch.immediate` | `notifications` | Retry policy declared in catalog | Timeout declared in catalog |
-| `notifications.dispatch.scheduled` | `notifications` | Retry policy declared in catalog | Timeout declared in catalog |
-| `notifications.dispatch.digest` | `notifications` | Retry policy declared in catalog | Timeout declared in catalog |
-| `notifications.dispatch.retry` | `notifications` | Retry policy declared in catalog | Timeout declared in catalog |
-| `ai.runs.intake` | `ai-control` | Retry policy declared in catalog | Timeout declared in catalog |
-| `ai.runs.verify` | `ai-control` | Retry policy declared in catalog | Timeout declared in catalog |
-| `workflow.approvals.remind` | `workflow-approvals` | Retry policy declared in catalog | Timeout declared in catalog |
-| `workflow.approvals.escalate` | `workflow-approvals` | Retry policy declared in catalog | Timeout declared in catalog |
-| `company.work-intakes.classify` | `company-intake` | Retry policy declared in catalog | Timeout declared in catalog |
-| `company.work-intakes.recover` | `company-intake` | Retry policy declared in catalog | Timeout declared in catalog |
+| `notifications.dispatch.immediate` | `notifications` | Retry policy not declared | No timeout declared |
+| `notifications.dispatch.scheduled` | `notifications` | Retry policy not declared | No timeout declared |
+| `notifications.dispatch.digest` | `notifications-digest` | Retry policy not declared | No timeout declared |
+| `notifications.dispatch.retry` | `notifications-retry` | Retry policy not declared | No timeout declared |
+| `ai.runs.intake` | `ai-intake` | Retry policy not declared | No timeout declared |
+| `ai.runs.verify` | `ai-verification` | Retry policy not declared | No timeout declared |
+| `workflow.approvals.remind` | `workflow-approvals` | Retry policy not declared | No timeout declared |
+| `workflow.approvals.escalate` | `workflow-escalations` | Retry policy not declared | No timeout declared |
+| `company.work-intakes.classify` | `company-intake` | Retry policy not declared | No timeout declared |
+| `company.work-intakes.recover` | `company-recovery` | Retry policy not declared | No timeout declared |
 
 
 
@@ -121,7 +123,7 @@ The plugin does not export a dedicated SQL helper module today. Treat the schema
 ## Failure Modes And Recovery
 
 - Action inputs can fail schema validation or permission evaluation before any durable mutation happens.
-- Queue routing, retries, and visibility windows should stay aligned with the exported catalog metadata instead of being redefined in downstream plugins.
+- If downstream automation is needed, the host must add it explicitly instead of assuming this plugin emits jobs.
 - There is no separate lifecycle-event feed to rely on today; do not build one implicitly from internal details.
 - Schema-affecting changes need extra care because there is no dedicated migration lane yet.
 
@@ -209,7 +211,7 @@ console.log("action", scheduleJobExecutionAction.id);
 
 - Exports 1 governed action: `jobs.executions.schedule`.
 - Owns 1 resource contract: `jobs.executions`.
-- Publishes 13 job definitions covering notifications dispatch, AI run intake and verification, workflow approval reminders and escalations, and company-intake classification and recovery.
+- Publishes 13 job definitions with explicit queue and retry policy metadata.
 - Registers a bounded UI surface that can be hosted by the surrounding admin or portal shell.
 - Defines a durable data schema contract even though no explicit SQL helper module is exported.
 
@@ -218,14 +220,16 @@ console.log("action", scheduleJobExecutionAction.id);
 - No dedicated integration test lane is exported in this repo today; validation currently leans on build, lint, typecheck, and test lanes.
 - The plugin owns durable data state, but it does not yet ship a dedicated migration verification lane in this repo.
 - The plugin exposes a UI surface, but not a richer admin workspace contribution module.
+- The repo does not yet export a domain parity catalog with owned entities, reports, settings surfaces, and exception queues.
 
 ### Recommended next
 
-- Add targeted integration coverage for AI run intake, verification, approval reminders, escalations, and company recovery jobs.
-- Add explicit migration or rollback coverage if job execution state becomes more operationally sensitive.
 - Add stronger worker-runtime integration guidance and operational troubleshooting as more plugins dispatch background jobs.
 - Expose more lifecycle telemetry once execution state becomes a first-class operator concern.
 - Add stronger operator-facing reconciliation and observability surfaces where runtime state matters.
+- Promote any currently implicit cross-plugin lifecycles into explicit command, event, or job contracts when those integrations stabilize.
+- Add targeted integration coverage once the current lifecycle path is stable enough to benefit from end-to-end assertions.
+- Add explicit migration or rollback coverage if this domain becomes more operationally sensitive.
 - Broaden the admin entry surface only if operators need more than the current embedded view or resource listing.
 
 ### Later / optional
