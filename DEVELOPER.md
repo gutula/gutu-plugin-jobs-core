@@ -56,6 +56,11 @@ Registers the background job definitions, queues, retry policy, and execution me
 | Field | Value |
 | --- | --- |
 | Depends On | `auth-core`, `org-tenant-core`, `role-policy-core`, `audit-core` |
+| Recommended Plugins | None |
+| Capability Enhancing | None |
+| Integration Only | None |
+| Suggested Packs | None |
+| Standalone Supported | Yes |
 | Requested Capabilities | `ui.register.admin`, `api.rest.mount`, `data.write.jobs` |
 | Provides Capabilities | `jobs.executions` |
 | Owns Data | `jobs.executions` |
